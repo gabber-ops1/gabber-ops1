@@ -1,0 +1,26 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {}
+}name: LAN Vulnerability Scan
+
+on:
+  workflow_dispatch:  # Handmatig starten via GitHub UI
+
+jobs:
+  scan:
+    runs-on: self-hosted
+    name: Run LAN scan on local device
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run scan and generate report
+        run: |
+          chmod +x scan_and_report.sh
+          ./scan_and_report.sh
+
+      - name: Upload Nmap scan report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lan-scan-report
+          path: scan-report-*
